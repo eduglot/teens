@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Pembelajaran BIPA & English</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Header / Navbar -->
+  <header class="bg-indigo-600 text-white p-4 shadow-md flex justify-between items-center px-6">
+    <h1 class="text-xl font-bold">Engyaa Learn Platform</h1>
+    <div id="userHeaderInfo" class="hidden flex items-center gap-4">
+      <span id="userNameDisplay" class="font-medium"></span>
+      <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm transition">Logout</button>
+    </div>
+  </header>
+
+  <!-- Container Utama -->
+  <main class="container mx-auto p-4 max-w-4xl my-auto">
+    
+    <!-- Alert Notification -->
+    <div id="alertBox" class="hidden mb-4 p-3 rounded text-center text-sm font-semibold"></div>
+
+    <!-- 1. FORM LOGIN -->
+    <div id="loginFormCard" class="bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto">
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Masuk ke Akun</h2>
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="loginEmail" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="loginPassword" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <button type="submit" id="btnLogin" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition">
+          Login
+        </button>
+      </form>
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Belum punya akun? <a href="#" onclick="toggleAuth('register')" class="text-indigo-600 font-semibold hover:underline">Daftar di sini</a>
+      </p>
+    </div>
+
+    <!-- 2. FORM REGISTRASI -->
+    <div id="registerFormCard" class="hidden bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto">
+      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Buat Akun Baru</h2>
+      <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+          <input type="text" id="regNama" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="regEmail" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="regPassword" required class="w-full mt-1 p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        </div>
+        <button type="submit" id="btnRegister" class="w-full bg-emerald-600 text-white py-2.5 rounded-lg font-semibold hover:bg-emerald-700 transition">
+          Daftar
+        </button>
+      </form>
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Sudah punya akun? <a href="#" onclick="toggleAuth('login')" class="text-indigo-600 font-semibold hover:underline">Login di sini</a>
+      </p>
+    </div>
+
+    <!-- 3. DASHBOARD MATERI (Muncul Setelah Login) -->
+    <div id="dashboardSection" class="hidden space-y-6">
+      <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-xl text-center">
+        <h2 class="text-2xl font-bold text-indigo-900">Selamat Datang, <span id="welcomeUser"></span>! 🎉</h2>
+        <p class="text-gray-600 mt-1">Silakan pilih kategori materi pembelajaran yang ingin diakses.</p>
+      </div>
+
+      <!-- Grid Materi -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Modul BIPA -->
+        <div class="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition">
+          <div class="text-3xl mb-3">🇮🇩</div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Materi BIPA (Bahasa Indonesia)</h3>
+          <p class="text-gray-600 text-sm mb-4">Akses modul pembelajaran Bahasa Indonesia bagi Penutur Asing (Level A1 - B2).</p>
+          <ul class="space-y-2 text-sm text-indigo-600 font-medium mb-4">
+            <li>📄 <a href="#" class="hover:underline">B1 - Bahan Bacaan Sederhana & Latihan</a></li>
+            <li>📄 <a href="#" class="hover:underline">B2 - Tata Bahasa & Percakapan Bisnis</a></li>
+          </ul>
+        </div>
+
+        <!-- Modul Bahasa Inggris -->
+        <div class="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition">
+          <div class="text-3xl mb-3">🇬🇧</div>
+          <h3 class="text-xl font-bold text-gray-800 mb-2">Materi English Learning</h3>
+          <p class="text-gray-600 text-sm mb-4">Akses silabus, worksheet, dan modul Bahasa Inggris interaktif.</p>
+          <ul class="space-y-2 text-sm text-indigo-600 font-medium mb-4">
+            <li>📄 <a href="#" class="hover:underline">General English - Grammar & Worksheets</a></li>
+            <li>📄 <a href="#" class="hover:underline">Business English & Digital Skills</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center p-4 text-xs text-gray-500 border-t bg-white">
+    &copy; 2026 Prototype Web Apps Script + GitHub Pages
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // ⚠️ GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT KAMU DARI LANGKAH 3!
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbz3wKnuEKPwGrbc2EvdgTU6-JLUwzHrAIaPxrkf2KjR6c7GPVrNLtpOSliZn184efSvfQ/exec";
+
+    // Toggle Tampilan Login / Register
+    function toggleAuth(type) {
+      hideAlert();
+      if (type === 'register') {
+        document.getElementById('loginFormCard').classList.add('hidden');
+        document.getElementById('registerFormCard').classList.remove('hidden');
+      } else {
+        document.getElementById('registerFormCard').classList.add('hidden');
+        document.getElementById('loginFormCard').classList.remove('hidden');
+      }
+    }
+
+    // Helper Alert
+    function showAlert(msg, isSuccess = true) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.textContent = msg;
+      alertBox.className = `mb-4 p-3 rounded text-center text-sm font-semibold ${
+        isSuccess ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'
+      }`;
+      alertBox.classList.remove('hidden');
+    }
+
+    function hideAlert() {
+      document.getElementById('alertBox').classList.add('hidden');
+    }
+
+    // Process Register
+    async function handleRegister(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const btn = document.getElementById('btnRegister');
+      btn.disabled = true;
+      btn.textContent = "Memproses...";
+
+      const data = {
+        action: 'register',
+        nama: document.getElementById('regNama').value,
+        email: document.getElementById('regEmail').value,
+        password: document.getElementById('regPassword').value
+      };
+
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          showAlert(result.message, true);
+          document.getElementById('registerForm').reset();
+          setTimeout(() => toggleAuth('login'), 1500);
+        } else {
+          showAlert(result.message, false);
+        }
+      } catch (err) {
+        showAlert("Terjadi kesalahan sistem/jaringan.", false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Daftar";
+      }
+    }
+
+    // Process Login
+    async function handleLogin(e) {
+      e.preventDefault();
+      hideAlert();
+
+      const btn = document.getElementById('btnLogin');
+      btn.disabled = true;
+      btn.textContent = "Memproses...";
+
+      const data = {
+        action: 'login',
+        email: document.getElementById('loginEmail').value,
+        password: document.getElementById('loginPassword').value
+      };
+
+      try {
+        const response = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          // Simpan sesi login sederhana ke localStorage
+          localStorage.setItem('userSession', JSON.stringify(result.user));
+          showDashboard(result.user);
+        } else {
+          showAlert(result.message, false);
+        }
+      } catch (err) {
+        showAlert("Terjadi kesalahan sistem/jaringan.", false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Login";
+      }
+    }
+
+    // Menampilkan Halaman Dashboard
+    function showDashboard(user) {
+      document.getElementById('loginFormCard').classList.add('hidden');
+      document.getElementById('registerFormCard').classList.add('hidden');
+      hideAlert();
+
+      document.getElementById('dashboardSection').classList.remove('hidden');
+      document.getElementById('userHeaderInfo').classList.remove('hidden');
+      document.getElementById('userNameDisplay').textContent = user.nama;
+      document.getElementById('welcomeUser').textContent = user.nama;
+    }
+
+    // Logout Function
+    function logout() {
+      localStorage.removeItem('userSession');
+      document.getElementById('dashboardSection').classList.add('hidden');
+      document.getElementById('userHeaderInfo').classList.add('hidden');
+      document.getElementById('loginFormCard').classList.remove('hidden');
+      document.getElementById('loginForm').reset();
+      showAlert("Anda telah keluar.", true);
+    }
+
+    // Cek status login saat halaman dimuat
+    window.onload = () => {
+      const savedUser = localStorage.getItem('userSession');
+      if (savedUser) {
+        showDashboard(JSON.parse(savedUser));
+      }
+    };
+  </script>
+</body>
+</html>
