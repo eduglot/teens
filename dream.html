@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUGLOT: Big Dreams & Pathways to Success</title>
+    <style>
+        :root {
+            --bg: #f5f9fc;
+            --card-bg: #ffffff;
+            --primary: #4834d4;
+            --primary-dark: #301b94;
+            --accent: #f0932b;
+            --green: #6ab04c;
+            --red: #eb4d4b;
+            --text: #2c3e50;
+            --border: #dff9fb;
+            --card-border: #dcdde1;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 940px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+
+        .timer-badge {
+            display: inline-block;
+            background: #ffeaa7;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* Tab Controls */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: #fff;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: #e0e7ff;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Stage Page Sections */
+        .stage-card {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+            border-left: 8px solid var(--primary);
+        }
+
+        .stage-card.active {
+            display: block;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stage-title {
+            font-size: 1.35rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stage-time {
+            background: #dfe4ea;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Audio Guess Box */
+        .audio-guess-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .audio-box {
+            background: #fdfdfd;
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .sound-btn {
+            background: #ffeaa7;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: transform 0.1s;
+        }
+
+        .sound-btn:active {
+            transform: scale(0.9);
+        }
+
+        .tiny-btn {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            border-radius: 14px;
+            padding: 5px 12px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 10px;
+            padding: 8px;
+            background: #eef2ff;
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Warm-up Rating Items */
+        .vote-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            margin: 8px 0;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .star-btn {
+            background: none;
+            border: none;
+            font-size: 1.35rem;
+            cursor: pointer;
+            filter: grayscale(1);
+        }
+
+        .star-btn.active {
+            filter: grayscale(0);
+        }
+
+        /* Dialogue */
+        .dialogue-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 1px solid var(--card-border);
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        .chat-bubble {
+            margin: 12px 0;
+            padding: 12px 16px;
+            border-radius: 14px;
+            max-width: 84%;
+            line-height: 1.5;
+        }
+
+        .chat-emma {
+            background: #e0e7ff;
+            text-align: left;
+            margin-right: auto;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-lucas {
+            background: #fef3c7;
+            text-align: left;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+
+        .speaker-name {
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 4px;
+            color: #64748b;
+        }
+
+        /* Cards */
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 2px dashed var(--card-border);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+        }
+
+        .card.revealed {
+            background: #fef3c7;
+            border-style: solid;
+            border-color: #f59e0b;
+            color: #000;
+        }
+
+        .card-meaning {
+            display: none;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        .card.revealed .card-meaning {
+            display: block;
+        }
+
+        /* Practice Exercises */
+        .exercise-section {
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 20px;
+        }
+
+        .exercise-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-question p {
+            margin: 0;
+            flex: 1 1 350px;
+        }
+
+        select {
+            font-size: 0.95rem;
+            padding: 5px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--primary);
+            font-family: inherit;
+        }
+
+        .feedback {
+            font-weight: bold;
+            min-width: 90px;
+            text-align: right;
+        }
+
+        .tf-btn {
+            background: #dfe4ea;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .tf-btn.selected {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Production Wheel */
+        .wheel-container {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .prompt-box {
+            min-height: 55px;
+            background: #f8fafc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 14px;
+            border: 1px solid var(--card-border);
+        }
+
+        button.primary-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: inherit;
+        }
+
+        button.primary-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            border-top: 1px dashed var(--card-border);
+            padding-top: 15px;
+        }
+
+        .nav-nav-btn {
+            background: #ecf0f1;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .nav-nav-btn:hover {
+            background: #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Success, Ambition & Big Dreams</h1>
+            <div class="timer-badge">Total Class Duration: 60 Minutes</div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchStage(1)">Stage 1: Warm-up</button>
+            <button class="tab-btn" onclick="switchStage(2)">Stage 2: Presentation</button>
+            <button class="tab-btn" onclick="switchStage(3)">Stage 3: Practice</button>
+            <button class="tab-btn" onclick="switchStage(4)">Stage 4: Production</button>
+        </nav>
+
+        <!-- PAGE 1: WARM-UP (10 MINS) -->
+        <section id="stage-1" class="stage-card active" style="border-left-color: #f0932b;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 1: Warm-up & Listening Mystery</span>
+                <span class="stage-time">10 Mins</span>
+            </div>
+
+            <!-- PART A: 6 AUDIO GUESSING BOX -->
+            <div class="exercise-section">
+                <div class="exercise-title">🎧 Part A: Listen, Guess the Word, and Check!</div>
+                <p>Click each speaker button to hear the mystery expression pronounced. Can you guess the dream or
+                    success phrase? Click <b>Show Answer</b> to reveal it!</p>
+
+                <div class="audio-guess-grid">
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Pipe dream')">🔊</button>
+                        <div><b>Mystery #1</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans1')">Show Answer</button>
+                        <div id="ans1" class="answer-box">Pipe dream</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Bucket list')">🔊</button>
+                        <div><b>Mystery #2</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans2')">Show Answer</button>
+                        <div id="ans2" class="answer-box">Bucket list</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Ambitious goal')">🔊</button>
+                        <div><b>Mystery #3</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans3')">Show Answer</button>
+                        <div id="ans3" class="answer-box">Ambitious goal</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Ulterior motive')">🔊</button>
+                        <div><b>Mystery #4</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans4')">Show Answer</button>
+                        <div id="ans4" class="answer-box">Ulterior motive</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Count me in')">🔊</button>
+                        <div><b>Mystery #5</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans5')">Show Answer</button>
+                        <div id="ans5" class="answer-box">Count me in</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Hit the target')">🔊</button>
+                        <div><b>Mystery #6</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans6')">Show Answer</button>
+                        <div id="ans6" class="answer-box">Hit the target</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PART B: KEYS TO SUCCESS BRAINSTORM -->
+            <div class="exercise-section" style="border-bottom:none;">
+                <div class="exercise-title">⭐ Part B: Keys to Success Brainstorm</div>
+                <p>What helps people reach their highest goals in life? Click the stars to rate each key
+                    ingredient (1 Star = Helpful, 3 Stars = Super Essential!).</p>
+
+                <div class="vote-item">
+                    <span>1. Hard Work & Practice (Putting in time every single day)</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>2. Setting Clear Targets & Milestones (Writing goals down)</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>3. Staying Ambitious (Dreaming bigger than everyone else)</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>4. Learning From Failures (Never giving up after a mistake)</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>5. Having Supportive Friends & Family (People who count you in)</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-controls">
+                <span></span>
+                <button class="nav-nav-btn" onclick="switchStage(2)">Next: Presentation ➔</button>
+            </div>
+        </section>
+
+        <!-- PAGE 2: PRESENTATION (15 MINS) -->
+        <section id="stage-2" class="stage-card" style="border-left-color: #4834d4;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 2: Presentation & Character Dialogue</span>
+                <span class="stage-time">15 Mins</span>
+            </div>
+
+            <p><b>Part A: Dialogue Role-Play (Read aloud as Emma & Lucas!)</b></p>
+            <div class="dialogue-box">
+                <div class="chat-bubble chat-emma">
+                    <span class="speaker-name">Emma:</span>
+                    Hey Lucas! Did you finish writing down your <b>bucket list</b> for the new school year?
+                </div>
+                <div class="chat-bubble chat-lucas">
+                    <span class="speaker-name">Lucas:</span>
+                    I sure did! <b>My dream is to</b> build a working solar-powered robot. It’s a very
+                    <b>ambitious</b> project, but it's my top <b>goal</b> this term!
+                </div>
+                <div class="chat-bubble chat-emma">
+                    <span class="speaker-name">Emma:</span>
+                    Whoa, that sounds amazing! Some kids said building a real robot in elementary school was just a
+                    <b>pipe dream</b>, but I know you can hit your <b>target</b>!
+                </div>
+                <div class="chat-bubble chat-lucas">
+                    <span class="speaker-name">Lucas:</span>
+                    Thanks Emma! <b>I've been wanting to</b> enter the regional science fair for two whole years[cite:
+                    3]. What about you? What <b>is on your bucket list</b>?
+                </div>
+                <div class="chat-bubble chat-emma">
+                    <span class="speaker-name">Emma:</span>
+                    Well, <b>one day</b> I hope to publish a fantasy graphic novel. And for this semester, <b>I
+                        hope to</b> start a weekend storybook creators' club!
+                </div>
+                <div class="chat-bubble chat-lucas">
+                    <span class="speaker-name">Lucas:</span>
+                    That sounds super cool! Please <b>count me in</b> as your very first member!
+                </div>
+                <div class="chat-bubble chat-emma">
+                    <span class="speaker-name">Emma:</span>
+                    Awesome! Wait... you don't have an <b>ulterior motive</b> to make me draw robot blueprints for you,
+                    do you?
+                </div>
+                <div class="chat-bubble chat-lucas">
+                    <span class="speaker-name">Lucas:</span>
+                    Haha, no hidden motives at all! <b>I wish I had</b> joined your art group sooner so we
+                    could share big ideas and conquer our goals together!
+                </div>
+            </div>
+
+            <p><b>Part B: Click Cards to Study Vocabulary & Desire Expressions</b></p>
+            <div class="flashcard-grid">
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Pipe dream</h4>
+                    <p class="card-meaning">An unrealistic dream that is almost impossible to happen.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Bucket list</h4>
+                    <p class="card-meaning">A list of exciting achievements you want to do in life.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Ambitious</h4>
+                    <p class="card-meaning">Having a strong desire to achieve great success.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Ulterior motive</h4>
+                    <p class="card-meaning">A secret, hidden reason for doing something.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Goal / Target</h4>
+                    <p class="card-meaning">A specific objective or result you work hard to achieve.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>One day...</h4>
+                    <p class="card-meaning">At an unspecified time in the future.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Count someone in</h4>
+                    <p class="card-meaning">To include someone in an activity or group.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>My dream is to...</h4>
+                    <p class="card-meaning">Expressing your ultimate personal hope.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I wish I could...</h4>
+                    <p class="card-meaning">Expressing a strong desire for something hard or impossible.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I've been wanting to...</h4>
+                    <p class="card-meaning">Something you wanted for a long duration of time.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I wish I had done...</h4>
+                    <p class="card-meaning">Expressing regret about past choices.</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I pray / hope to...</h4>
+                    <p class="card-meaning">Expressing a heartfelt, earnest hope for success.</p>
+                </div>
+            </div>
+
+            <div class="page-controls">
+                <button class="nav-nav-btn" onclick="switchStage(1)">⬅ Back to Warm-up</button>
+                <button class="nav-nav-btn" onclick="switchStage(3)">Next: Practice ➔</button>
+            </div>
+        </section>
+
+        <!-- PAGE 3: PRACTICE (20 MINS) -->
+        <section id="stage-3" class="stage-card" style="border-left-color: #6ab04c;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 3: Practice (21 Interactive Challenges)</span>
+                <span class="stage-time">20 Mins</span>
+            </div>
+
+            <!-- EXERCISE TYPE 1: Choose the Expression (7 Items) -->
+            <div class="exercise-section">
+                <div class="exercise-title">Exercise 1: Complete the Sentence (7 Questions)</div>
+
+                <div class="quiz-question">
+                    <p>1. Skydiving over the Swiss Alps is number one on my <select id="e1_1">
+                            <option value="">--choose--</option>
+                            <option value="bucket">bucket list</option>
+                            <option value="motive">ulterior motive</option>
+                        </select>.</p>
+                    <span id="fb_e1_1" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>2. Trying to build a castle on the moon with plastic blocks is just an impossible <select
+                            id="e1_2">
+                            <option value="">--choose--</option>
+                            <option value="pipe">pipe dream</option>
+                            <option value="target">target</option>
+                        </select>.</p>
+                    <span id="fb_e1_2" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>3. She sets high standards and works late; she is extremely <select id="e1_3">
+                            <option value="">--choose--</option>
+                            <option value="ambitious">ambitious</option>
+                            <option value="bucket">bucket list</option>
+                        </select>.</p>
+                    <span id="fb_e1_3" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>4. If you are starting a weekend coding challenge, please <select id="e1_4">
+                            <option value="">--choose--</option>
+                            <option value="count">count me in</option>
+                            <option value="motive">ulterior motive</option>
+                        </select>!</p>
+                    <span id="fb_e1_4" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>5. He only offered to walk my dog because he had an <select id="e1_5">
+                            <option value="">--choose--</option>
+                            <option value="motive">ulterior motive</option>
+                            <option value="pipe">pipe dream</option>
+                        </select> to borrow my skateboard.</p>
+                    <span id="fb_e1_5" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>6. Our team scored 95 points and hit our exact monthly <select id="e1_6">
+                            <option value="">--choose--</option>
+                            <option value="target">target</option>
+                            <option value="pipe">pipe dream</option>
+                        </select>.</p>
+                    <span id="fb_e1_6" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>7. <select id="e1_7">
+                            <option value="">--choose--</option>
+                            <option value="one_day">One day</option>
+                            <option value="motive">Ulterior motive</option>
+                        </select>, I will fly an airplane across the ocean!</p>
+                    <span id="fb_e1_7" class="feedback"></span>
+                </div>
+            </div>
+
+            <!-- EXERCISE TYPE 2: Meaning Match (7 Items) -->
+            <div class="exercise-section">
+                <div class="exercise-title">Exercise 2: Match the Meaning (7 Questions)</div>
+
+                <div class="quiz-question">
+                    <p>8. Meaning: <i>"A list of dream goals you want to accomplish in your lifetime"</i></p>
+                    <select id="e2_1">
+                        <option value="">--choose--</option>
+                        <option value="bucket">Bucket list</option>
+                        <option value="pipe">Pipe dream</option>
+                        <option value="target">Target</option>
+                    </select>
+                    <span id="fb_e2_1" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>9. Meaning: <i>"A hidden, secret reason behind someone's actions"</i></p>
+                    <select id="e2_2">
+                        <option value="">--choose--</option>
+                        <option value="motive">Ulterior motive</option>
+                        <option value="ambitious">Ambitious</option>
+                        <option value="count">Count someone in</option>
+                    </select>
+                    <span id="fb_e2_2" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>10. Meaning: <i>"A totally unrealistic, impossible fantasy"</i></p>
+                    <select id="e2_3">
+                        <option value="">--choose--</option>
+                        <option value="pipe">Pipe dream</option>
+                        <option value="target">Target</option>
+                        <option value="bucket">Bucket list</option>
+                    </select>
+                    <span id="fb_e2_3" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>11. Meaning: <i>"To participate or join into an activity"</i></p>
+                    <select id="e2_4">
+                        <option value="">--choose--</option>
+                        <option value="count">Count someone in</option>
+                        <option value="motive">Ulterior motive</option>
+                        <option value="pipe">Pipe dream</option>
+                    </select>
+                    <span id="fb_e2_4" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>12. Meaning: <i>"Having big dreams and working relentlessly toward them"</i></p>
+                    <select id="e2_5">
+                        <option value="">--choose--</option>
+                        <option value="ambitious">Ambitious</option>
+                        <option value="pipe">Pipe dream</option>
+                        <option value="motive">Ulterior motive</option>
+                    </select>
+                    <span id="fb_e2_5" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>13. Meaning: <i>"A specific score or objective you strive to hit"</i></p>
+                    <select id="e2_6">
+                        <option value="">--choose--</option>
+                        <option value="target">Goal / Target</option>
+                        <option value="motive">Ulterior motive</option>
+                        <option value="pipe">Pipe dream</option>
+                    </select>
+                    <span id="fb_e2_6" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>14. Meaning: <i>"Expressing deep past regret about an action"</i></p>
+                    <select id="e2_7">
+                        <option value="">--choose--</option>
+                        <option value="wish_done">I wish I had done...</option>
+                        <option value="count">Count someone in</option>
+                        <option value="target">Target</option>
+                    </select>
+                    <span id="fb_e2_7" class="feedback"></span>
+                </div>
+            </div>
+
+            <!-- EXERCISE TYPE 3: True / False (7 Items) -->
+            <div class="exercise-section">
+                <div class="exercise-title">Exercise 3: Situation Sense Check (7 Questions)</div>
+
+                <div class="quiz-question">
+                    <p>15. A <b>pipe dream</b> is an easy, realistic goal that you can finish in five minutes.
+                    </p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(15, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(15, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_1" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>16. When you say <b>"Count me in"</b>, you refuse to be a part of the team.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(16, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(16, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_2" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>17. An <b>ambitious</b> student strives for high marks and challenges themselves.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(17, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(17, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_3" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>18. An <b>ulterior motive</b> means sharing all your thoughts honestly without secrets.
+                    </p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(18, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(18, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_4" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>19. A <b>bucket list</b> contains memorable life goals you genuinely want to achieve.
+                    </p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(19, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(19, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_5" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>20. Saying <b>"I've been wanting to..."</b> means you just thought of the idea this second[cite:
+                        3].</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(20, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(20, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_6" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>21. Having a clear <b>target</b> helps people focus their effort towards success.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(21, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(21, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_7" class="feedback"></span>
+                </div>
+            </div>
+
+            <center><button class="primary-btn" onclick="checkAllExercises()">Submit All 21 Practice Answers</button>
+            </center>
+
+            <div class="page-controls">
+                <button class="nav-nav-btn" onclick="switchStage(2)">⬅ Back to Presentation</button>
+                <button class="nav-nav-btn" onclick="switchStage(4)">Next: Production ➔</button>
+            </div>
+        </section>
+
+        <!-- PAGE 4: PRODUCTION (15 MINS) -->
+        <section id="stage-4" class="stage-card" style="border-left-color: #eb4d4b;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 4: Production & Dream Wheel</span>
+                <span class="stage-time">15 Mins</span>
+            </div>
+            <p>Spin the wheel to get one of the discussion questions from our PDF worksheet! Share your thought
+                aloud using at least <b>one vocabulary word or desire expression</b> (e.g., <i>"My dream is to..."</i>,
+                <i>"On my bucket list..."</i>).
+            </p>
+
+            <div class="wheel-container">
+                <div class="prompt-box" id="promptDisplay">Click the button below to pick a question!</div>
+                <button class="primary-btn" onclick="getPrompt()">Spin the Discussion Wheel 🎲</button>
+            </div>
+
+            <div class="page-controls">
+                <button class="nav-nav-btn" onclick="switchStage(3)">⬅ Back to Practice</button>
+                <span></span>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Page / Stage Navigation
+        function switchStage(stageNum) {
+            document.querySelectorAll('.stage-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(`stage-${stageNum}`).classList.add('active');
+            document.querySelectorAll('.tab-btn')[stageNum - 1].classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Speech Synthesis for Audio Click Listening
+        function speakPhrase(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Speech synthesis is not supported on this browser.");
+            }
+        }
+
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // Warm-up Stars
+        function rate(btn) {
+            const parent = btn.parentElement;
+            const stars = Array.from(parent.children);
+            const index = stars.indexOf(btn);
+            stars.forEach((s, i) => {
+                s.classList.toggle('active', i <= index);
+            });
+        }
+
+        // True/False tracking
+        const tfAnswers = { 15: null, 16: null, 17: null, 18: null, 19: null, 20: null, 21: null };
+
+        function setTF(qNum, value, elem) {
+            tfAnswers[qNum] = value;
+            const parent = elem.parentElement;
+            Array.from(parent.children).forEach(b => b.classList.remove('selected'));
+            elem.classList.add('selected');
+        }
+
+        // Check 21 Exercises
+        function checkAllExercises() {
+            // 1. Fill-in-the-blank
+            const e1Keys = {
+                e1_1: 'bucket',
+                e1_2: 'pipe',
+                e1_3: 'ambitious',
+                e1_4: 'count',
+                e1_5: 'motive',
+                e1_6: 'target',
+                e1_7: 'one_day'
+            };
+
+            Object.keys(e1Keys).forEach(id => {
+                const userVal = document.getElementById(id).value;
+                const fb = document.getElementById(`fb_${id}`);
+                if (userVal === e1Keys[id]) {
+                    fb.innerHTML = '✔ Correct!';
+                    fb.style.color = 'green';
+                } else {
+                    fb.innerHTML = '✖ Try again';
+                    fb.style.color = 'red';
+                }
+            });
+
+            // 2. Meaning Match
+            const e2Keys = {
+                e2_1: 'bucket',
+                e2_2: 'motive',
+                e2_3: 'pipe',
+                e2_4: 'count',
+                e2_5: 'ambitious',
+                e2_6: 'target',
+                e2_7: 'wish_done'
+            };
+
+            Object.keys(e2Keys).forEach(id => {
+                const userVal = document.getElementById(id).value;
+                const fb = document.getElementById(`fb_${id}`);
+                if (userVal === e2Keys[id]) {
+                    fb.innerHTML = '✔ Correct!';
+                    fb.style.color = 'green';
+                } else {
+                    fb.innerHTML = '✖ Try again';
+                    fb.style.color = 'red';
+                }
+            });
+
+            // 3. True / False
+            const tfCorrect = {
+                15: 'F',
+                16: 'F',
+                17: 'T',
+                18: 'F',
+                19: 'T',
+                20: 'F',
+                21: 'T'
+            };
+
+            for (let i = 15; i <= 21; i++) {
+                const fb = document.getElementById(`fb_e3_${i - 14}`);
+                if (tfAnswers[i] === tfCorrect[i]) {
+                    fb.innerHTML = '✔ Correct!';
+                    fb.style.color = 'green';
+                } else {
+                    fb.innerHTML = '✖ Try again';
+                    fb.style.color = 'red';
+                }
+            }
+        }
+
+        // 8 Discussion prompts adapted from the PDF worksheet
+        const prompts = [
+            "What is your ultimate dream career goal?",
+            "What is your greatest hope for your family or your friends?",
+            "What was your earliest childhood dream?",
+            "Have any of your dreams or wishes come true already?",
+            "Do you think it is better to have a realistic goal or a very ambitious goal? Why?",
+            "What advice would you give to a friend who wants to reach their goals?",
+            "Is it better to have tried and failed, or better to have not tried at all?",
+            "Have you ever experienced a failure or setback? What did it teach you?"
+        ];
+
+        function getPrompt() {
+            const randomIdx = Math.floor(Math.random() * prompts.length);
+            document.getElementById('promptDisplay').innerText = prompts[randomIdx];
+        }
+    </script>
+
+</body>
+
+</html>
