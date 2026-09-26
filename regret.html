@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eduglot - Wishes & Regrets</title>
+    <style>
+        :root {
+            --bg: #f3f0ff;
+            --card-bg: #ffffff;
+            --primary: #6c5ce7;
+            --primary-dark: #4834d4;
+            --accent: #fd79a8;
+            --yellow: #feca57;
+            --green: #10ac84;
+            --red: #ee5253;
+            --text: #2d3436;
+            --card-border: #dfe6e9;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            background: #fff;
+            padding: 22px;
+            border-radius: 20px;
+            box-shadow: 0 6px 16px rgba(108, 92, 231, 0.12);
+            margin-bottom: 20px;
+            border: 3px solid #dcdde1;
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .badge-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .timer-badge {
+            background: var(--yellow);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .theme-badge {
+            background: #dff9fb;
+            color: #0abde3;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Tab Controls */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .tab-btn {
+            background: #fff;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: #ede9fe;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        }
+
+        /* Stage Cards */
+        .stage-card {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+            border-left: 10px solid var(--primary);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .stage-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .stage-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stage-time {
+            background: #dfe4ea;
+            padding: 5px 14px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Listening Audio Mystery */
+        .audio-guess-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .audio-box {
+            background: #faf5ff;
+            border: 2px dashed #d8b4fe;
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .sound-btn {
+            background: #fed7aa;
+            border: 2px solid #f97316;
+            border-radius: 50%;
+            width: 58px;
+            height: 58px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: transform 0.1s;
+        }
+
+        .sound-btn:active {
+            transform: scale(0.92);
+        }
+
+        .tiny-btn {
+            background: #ede9fe;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            border-radius: 14px;
+            padding: 5px 14px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 10px;
+            padding: 8px;
+            background: #fdf2f8;
+            border-radius: 8px;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        /* Star rating rows */
+        .vote-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            margin: 8px 0;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .star-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            filter: grayscale(1);
+        }
+
+        .star-btn.active {
+            filter: grayscale(0);
+        }
+
+        /* Dialogue & Comprehension */
+        .dialogue-box {
+            background: #faf5ff;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e9d5ff;
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .chat-bubble {
+            margin: 14px 0;
+            padding: 12px 18px;
+            border-radius: 16px;
+            max-width: 82%;
+            line-height: 1.5;
+        }
+
+        .chat-mia {
+            background: #e0e7ff;
+            text-align: left;
+            margin-right: auto;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-noah {
+            background: #fce7f3;
+            text-align: left;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+
+        .speaker-name {
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 4px;
+            color: #64748b;
+        }
+
+        .comp-box {
+            background: #fff;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .comp-box h3 {
+            margin-top: 0;
+            color: var(--accent);
+            font-size: 1.15rem;
+        }
+
+        .comp-q {
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #f1f2f6;
+        }
+
+        /* Cards */
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin-top: 15px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .card.revealed {
+            background: #ede9fe;
+            border-style: solid;
+            border-color: var(--primary);
+            color: #000;
+        }
+
+        .card-meaning {
+            display: none;
+            margin-top: 8px;
+            font-size: 0.88rem;
+            color: #333;
+        }
+
+        .card.revealed .card-meaning {
+            display: block;
+        }
+
+        /* Practice Exercises */
+        .exercise-section {
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 20px;
+        }
+
+        .exercise-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.15rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-question p {
+            margin: 0;
+            flex: 1 1 360px;
+            font-size: 0.95rem;
+        }
+
+        select {
+            font-size: 0.92rem;
+            padding: 5px 8px;
+            border-radius: 8px;
+            border: 1.5px solid var(--primary);
+            font-family: inherit;
+        }
+
+        .feedback {
+            font-weight: bold;
+            min-width: 90px;
+            text-align: right;
+        }
+
+        .tf-btn {
+            background: #dfe4ea;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .tf-btn.selected {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Production Activities */
+        .activity-container {
+            background: #faf5ff;
+            border: 2px solid #e9d5ff;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .activity-title {
+            color: var(--primary-dark);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .prompt-box {
+            min-height: 55px;
+            background: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 14px;
+            border: 1px solid var(--card-border);
+            text-align: center;
+        }
+
+        button.primary-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 26px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.25);
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        button.primary-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Secret Time Machine Fixer */
+        .rewind-card {
+            background: #fff;
+            border: 2px dashed var(--accent);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+
+        .rewind-card textarea {
+            width: 95%;
+            height: 65px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            padding: 8px;
+            margin-top: 8px;
+        }
+
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            border-top: 1px dashed var(--card-border);
+            padding-top: 15px;
+        }
+
+        .nav-nav-btn {
+            background: #ecf0f1;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 0.92rem;
+        }
+
+        .nav-nav-btn:hover {
+            background: #dcdde1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Wishes & Regrets</h1>
+            <div class="badge-bar">
+                <div class="timer-badge">Duration: 60-90 Minutes</div>
+                <div class="theme-badge">Grammar & Creative Fluency</div>
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchStage(1)">Stage 1: Warm-up</button>
+            <button class="tab-btn" onclick="switchStage(2)">Stage 2: Presentation</button>
+            <button class="tab-btn" onclick="switchStage(3)">Stage 3: Practice</button>
+            <button class="tab-btn" onclick="switchStage(4)">Stage 4: Production</button>
+        </nav>
+
+        <!-- PAGE 1: WARM-UP (10 MINS) -->
+        <section id="stage-1" class="stage-card active" style="border-left-color: #feca57;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 1: Warm-up & Listening Mystery</span>
+                <span class="stage-time">10 Mins</span>
+            </div>
+
+            <!-- PART A: 6 AUDIO GUESSING BOXES -->
+            <div class="exercise-section">
+                <div class="exercise-title">🎧 Part A: Listen, Guess the Regret, and Check!</div>
+                <p>Click each speaker button to hear a mystery wish or regret pronounced. Can you repeat and
+                    guess what words were said? Then click <b>Show Answer</b> to reveal!</p>
+
+                <div class="audio-guess-grid">
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('I wish I had more time')">🔊</button>
+                        <div><b>Mystery #1</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans1')">Show Answer</button>
+                        <div id="ans1" class="answer-box">"I wish I had more time."</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('I shouldn\'t have done that')">🔊</button>
+                        <div><b>Mystery #2</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans2')">Show Answer</button>
+                        <div id="ans2" class="answer-box">"I shouldn't have done that."</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('If only I had studied more')">🔊</button>
+                        <div><b>Mystery #3</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans3')">Show Answer</button>
+                        <div id="ans3" class="answer-box">"If only I had studied more..."</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('Quitting was unfortunate')">🔊</button>
+                        <div><b>Mystery #4</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans4')">Show Answer</button>
+                        <div id="ans4" class="answer-box">"Quitting was unfortunate."</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn" onclick="speakPhrase('I would have won the game')">🔊</button>
+                        <div><b>Mystery #5</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans5')">Show Answer</button>
+                        <div id="ans5" class="answer-box">"I would have won the game."</div>
+                    </div>
+
+                    <div class="audio-box">
+                        <button class="sound-btn"
+                            onclick="speakPhrase('I wish you wouldn\'t bark at night')">🔊</button>
+                        <div><b>Mystery #6</b></div>
+                        <button class="tiny-btn" onclick="toggleAnswer('ans6')">Show Answer</button>
+                        <div id="ans6" class="answer-box">"I wish you wouldn't bark at night!"</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PART B: WARM-UP QUESTIONS & SURVEY -->
+            <div class="exercise-section" style="border-bottom:none;">
+                <div class="exercise-title">⭐ Part B: Common Kid Regrets Survey</div>
+                <p>How often do you experience these common regrets? Rate with stars (1 Star = Never, 3 Stars =
+                    All the time!).</p>
+
+                <div class="vote-item">
+                    <span>1. Staying up too late playing games on a school night (Now super tired!)</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>2. Spending all my allowance money on snacks in one single day</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>3. Forgetting to eat breakfast and feeling hungry before recess</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>4. Not studying before a pop quiz and wishing I had tried harder</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+
+                <div class="vote-item">
+                    <span>5. Scrolling endlessly on a tablet instead of playing outside with friends</span>
+                    <div>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                        <button class="star-btn" onclick="rate(this)">⭐</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-controls">
+                <span></span>
+                <button class="nav-nav-btn" onclick="switchStage(2)">Next: Presentation ➔</button>
+            </div>
+        </section>
+
+        <!-- PAGE 2: PRESENTATION (15 MINS) -->
+        <section id="stage-2" class="stage-card" style="border-left-color: #6c5ce7;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 2: Dialogue, Comprehension & Rules</span>
+                <span class="stage-time">15 Mins</span>
+            </div>
+
+            <p><b>Part A: Dialogue Role-Play (Mia & Noah's Science Fair Story)</b></p>
+            <div class="dialogue-box">
+                <div class="chat-bubble chat-mia">
+                    <span class="speaker-name">Mia:</span>
+                    Noah, you look so exhausted today! Are you okay?
+                </div>
+                <div class="chat-bubble chat-noah">
+                    <span class="speaker-name">Noah:</span>
+                    Ugh, not really. <b>If I had gone to bed sooner, I wouldn't be so tired right now</b>! I
+                    stayed up till 1 AM playing online games. <b>I wish I hadn't stayed up so late</b>!
+                </div>
+                <div class="chat-bubble chat-mia">
+                    <span class="speaker-name">Mia:</span>
+                    Oh no! And didn't we have our science project due this morning?
+                </div>
+                <div class="chat-bubble chat-noah">
+                    <span class="speaker-name">Noah:</span>
+                    Yes! <b>I shouldn't have procrastinated</b>. <b>If I had finished my poster board on
+                        Sunday, I would have had a clean, finished project</b>. Losing points on presentation
+                    <b>was really unfortunate</b>.
+                </div>
+                <div class="chat-bubble chat-mia">
+                    <span class="speaker-name">Mia:</span>
+                    <b>If only you had called me</b>, I would have helped you glue the charts! Also,
+                    did you eat breakfast?
+                </div>
+                <div class="chat-bubble chat-noah">
+                    <span class="speaker-name">Noah:</span>
+                    No, I ran out the door and missed the bus! <b>If I had taken the bus, I wouldn't have been
+                        late</b> to homeroom. And <b>if I had eaten breakfast, I wouldn't be starving right
+                        now</b>!
+                </div>
+                <div class="chat-bubble chat-mia">
+                    <span class="speaker-name">Mia:</span>
+                    Haha, don't worry. I brought two apple muffins. <b>I wish you wouldn't stress so much</b>[cite:
+                    5]—here, take one! Let's treat today as a fresh start!
+                </div>
+                <div class="chat-bubble chat-noah">
+                    <span class="speaker-name">Noah:</span>
+                    Thanks Mia! You saved my day. Next time, I promise to follow a better study routine[cite:
+                    4]!
+                </div>
+            </div>
+
+            <!-- NEW: COMPREHENSION QUESTIONS IN DIALOGUE -->
+            <div class="comp-box">
+                <h3>🧠 Dialogue Quick Comprehension Check</h3>
+
+                <div class="comp-q">
+                    <p>1. Why is Noah feeling so tired during homeroom?</p>
+                    <label><input type="radio" name="comp1" onclick="checkComp(1, true)"> He stayed up until 1 AM
+                        playing games.</label><br>
+                    <label><input type="radio" name="comp1" onclick="checkComp(1, false)"> He ran five miles before
+                        school.</label>
+                    <div id="comp-fb1" style="font-weight:bold; margin-top:4px;"></div>
+                </div>
+
+                <div class="comp-q">
+                    <p>2. What would have happened if Noah had called Mia on Sunday?</p>
+                    <label><input type="radio" name="comp2" onclick="checkComp(2, false)"> She would have done all his
+                        homework for him.</label><br>
+                    <label><input type="radio" name="comp2" onclick="checkComp(2, true)"> She would have helped him glue
+                        the project charts.</label>
+                    <div id="comp-fb2" style="font-weight:bold; margin-top:4px;"></div>
+                </div>
+
+                <div class="comp-q">
+                    <p>3. Why is Noah hungry right now?</p>
+                    <label><input type="radio" name="comp3" onclick="checkComp(3, true)"> If he had eaten breakfast, he
+                        wouldn't be hungry, but he rushed out.</label><br>
+                    <label><input type="radio" name="comp3" onclick="checkComp(3, false)"> The school cafeteria ran out
+                        of food.</label>
+                    <div id="comp-fb3" style="font-weight:bold; margin-top:4px;"></div>
+                </div>
+            </div>
+
+            <p><b>Part B: Click Cards to Master Grammar Patterns</b></p>
+            <div class="flashcard-grid">
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I wish + Past Simple</h4>
+                    <p class="card-meaning">Present Wish: Wanting something different right now (e.g., <i>I wish I had
+                            more time</i>).</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I wish + Past Perfect</h4>
+                    <p class="card-meaning">Past Regret: Looking back at what went wrong (e.g., <i>I wish I hadn't
+                            stayed up late</i>).</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>I shouldn't have + V3</h4>
+                    <p class="card-meaning">Admitting you did the wrong action in the past (e.g., <i>I shouldn't have
+                            argued</i>).</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>3rd Conditional (Past)</h4>
+                    <p class="card-meaning"><i>If + had + V3, would have + V3</i> (Imagining an impossible changed
+                        past!)</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>Mixed Conditional</h4>
+                    <p class="card-meaning"><i>If + had + V3, would be (now)</i> (A past choice changing how you feel
+                        right now!)</p>
+                </div>
+                <div class="card" onclick="this.classList.toggle('revealed')">
+                    <h4>If only...</h4>
+                    <p class="card-meaning">A more dramatic, emotional way to say "I wish" (e.g., <i>If only you had
+                            called!</i>)</p>
+                </div>
+            </div>
+
+            <div class="page-controls">
+                <button class="nav-nav-btn" onclick="switchStage(1)">⬅ Back to Warm-up</button>
+                <button class="nav-nav-btn" onclick="switchStage(3)">Next: Practice ➔</button>
+            </div>
+        </section>
+
+        <!-- PAGE 3: PRACTICE (20 MINS) -->
+        <section id="stage-3" class="stage-card" style="border-left-color: #10ac84;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 3: Practice (21 Interactive Challenges)</span>
+                <span class="stage-time">20 Mins</span>
+            </div>
+
+            <!-- EXERCISE TYPE 1: Choose the Grammar Fill (7 Items) -->
+            <div class="exercise-section">
+                <div class="exercise-title">Exercise 1: Complete the Wish / Conditional (7 Questions)</div>
+
+                <div class="quiz-question">
+                    <p>1. If John had saved up more money, he <select id="e1_1">
+                            <option value="">--choose--</option>
+                            <option value="would_bought">would have bought the new bike</option>
+                            <option value="buys">buys the new bike</option>
+                        </select>.</p>
+                    <span id="fb_e1_1" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>2. If she had taken the morning bus, she <select id="e1_2">
+                            <option value="">--choose--</option>
+                            <option value="late">wouldn't have been late for class</option>
+                            <option value="is_late">isn't late</option>
+                        </select>.</p>
+                    <span id="fb_e1_2" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>3. If they had played together as a team, they <select id="e1_3">
+                            <option value="">--choose--</option>
+                            <option value="won">would have won the soccer game</option>
+                            <option value="win">will win the game</option>
+                        </select>.</p>
+                    <span id="fb_e1_3" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>4. If I had eaten breakfast this morning, I <select id="e1_4">
+                            <option value="">--choose--</option>
+                            <option value="hungry">wouldn't be hungry right now</option>
+                            <option value="was_hungry">wasn't hungry</option>
+                        </select>.</p>
+                    <span id="fb_e1_4" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>5. Losing my library book on the bus <select id="e1_5">
+                            <option value="">--choose--</option>
+                            <option value="unfortunate">was really unfortunate</option>
+                            <option value="wish">I wish</option>
+                        </select>.</p>
+                    <span id="fb_e1_5" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>6. I <select id="e1_6">
+                            <option value="">--choose--</option>
+                            <option value="shouldnt_spent">shouldn't have spent</option>
+                            <option value="shouldnt_spend">shouldn't spend</option>
+                        </select> all my pocket money on trading cards yesterday!</p>
+                    <span id="fb_e1_6" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>7. If he had done his laundry yesterday, he <select id="e1_7">
+                            <option value="">--choose--</option>
+                            <option value="clean">would have clean clothes today</option>
+                            <option value="had_clothes">had clothes</option>
+                        </select>.</p>
+                    <span id="fb_e1_7" class="feedback"></span>
+                </div>
+            </div>
+
+            <!-- EXERCISE TYPE 2: Meaning & Clause Match (7 Items) -->
+            <div class="exercise-section">
+                <div class="exercise-title">Exercise 2: Match the Result Clause (7 Questions)</div>
+
+                <div class="quiz-question">
+                    <p>8. "If she had studied more for her exam..."</p>
+                    <select id="e2_1">
+                        <option value="">--choose matching result--</option>
+                        <option value="pass">...she would have gotten a top score.</option>
+                        <option value="tired">...she wouldn't be so tired now.</option>
+                        <option value="game">...they would have won the game.</option>
+                    </select>
+                    <span id="fb_e2_1" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>9. "If I had gone home sooner last night..."</p>
+                    <select id="e2_2">
+                        <option value="">--choose matching result--</option>
+                        <option value="tired">...I wouldn't be so sleepy in school today!</option>
+                        <option value="pass">...she would have passed easily.</option>
+                        <option value="rich">...I would have been super rich.</option>
+                    </select>
+                    <span id="fb_e2_2" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>10. "If they had passed the ball to each other..."</p>
+                    <select id="e2_3">
+                        <option value="">--choose matching result--</option>
+                        <option value="game">...they would have won the final championship!</option>
+                        <option value="tired">...I wouldn't be hungry now.</option>
+                        <option value="pass">...she would have bought clothes.</option>
+                    </select>
+                    <span id="fb_e2_3" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>11. "I wish my neighbor's puppy..."</p>
+                    <select id="e2_4">
+                        <option value="">--choose matching wish--</option>
+                        <option value="bark">...wouldn't bark so loudly late at night!</option>
+                        <option value="pass">...would have studied for exams.</option>
+                        <option value="rich">...would be rich.</option>
+                    </select>
+                    <span id="fb_e2_4" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>12. "If I had worn my helmet on the scooter..."</p>
+                    <select id="e2_5">
+                        <option value="">--choose matching result--</option>
+                        <option value="hurt">...I wouldn't have been hurt when I fell.</option>
+                        <option value="game">...we would have won the game.</option>
+                        <option value="bark">...the dog wouldn't bark.</option>
+                    </select>
+                    <span id="fb_e2_5" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>13. "If only our classroom had more space..."</p>
+                    <select id="e2_6">
+                        <option value="">--choose matching wish--</option>
+                        <option value="space">...we could set up a reading beanbag corner!</option>
+                        <option value="pass">...she would have passed the test.</option>
+                        <option value="hurt">...she wouldn't have been hurt.</option>
+                    </select>
+                    <span id="fb_e2_6" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>14. "What would you have done..."</p>
+                    <select id="e2_7">
+                        <option value="">--choose matching ending--</option>
+                        <option value="help">...if I hadn't been right there to help you?</option>
+                        <option value="bark">...if the puppy wouldn't bark?</option>
+                        <option value="space">...if we had more space?</option>
+                    </select>
+                    <span id="fb_e2_7" class="feedback"></span>
+                </div>
+            </div>
+
+            <!-- EXERCISE TYPE 3: True / False Sense Checks (7 Items) -->
+            <div class="exercise-section">
+                <div class="exercise-title">Exercise 3: Situation & Grammar Sense Check (7 Questions)</div>
+
+                <div class="quiz-question">
+                    <p>15. Saying <i>"I wish I had more time"</i> expresses a regret about 10 years ago.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(15, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(15, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_1" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>16. In 3rd conditional, we use <i>had + past participle</i> in the IF-clause to talk about the
+                        past.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(16, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(16, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_2" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>17. <i>"I shouldn't have eaten that third slice of cake"</i> means you are glad you ate it[cite:
+                        4].</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(17, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(17, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_3" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>18. <i>"If only..."</i> can be used just like <i>"I wish..."</i> to express deep desires or
+                        regrets.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(18, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(18, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_4" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>19. <i>"Quitting the school band was unfortunate"</i> means you feel pleased that you quit[cite:
+                        4].</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(19, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(19, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_5" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>20. <i>"If I had studied more, I would have passed"</i> means the speaker didn't study enough in
+                        reality.</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(20, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(20, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_6" class="feedback"></span>
+                </div>
+
+                <div class="quiz-question">
+                    <p>21. It is better to have tried and learned than to never have tried at all!</p>
+                    <div>
+                        <button class="tf-btn" onclick="setTF(21, 'T', this)">True</button>
+                        <button class="tf-btn" onclick="setTF(21, 'F', this)">False</button>
+                    </div>
+                    <span id="fb_e3_7" class="feedback"></span>
+                </div>
+            </div>
+
+            <center><button class="primary-btn" onclick="checkAllExercises()">Submit All 21 Practice Answers</button>
+            </center>
+
+            <div class="page-controls">
+                <button class="nav-nav-btn" onclick="switchStage(2)">⬅ Back to Presentation</button>
+                <button class="nav-nav-btn" onclick="switchStage(4)">Next: Production ➔</button>
+            </div>
+        </section>
+
+        <!-- PAGE 4: PRODUCTION (15 MINS) -->
+        <section id="stage-4" class="stage-card" style="border-left-color: #fd79a8;">
+            <div class="stage-header">
+                <span class="stage-title">Stage 4: Creative Production Lab (2 Big Activities)</span>
+                <span class="stage-time">15 Mins</span>
+            </div>
+
+            <!-- PRODUCTION ACTIVITY 1: QUESTION WHEEL -->
+            <div class="activity-container">
+                <div class="activity-title">🎲 Activity 1: The Regret & Wishes Discussion Wheel</div>
+                <p>Spin the wheel to get one of the 8 discussion prompts from our worksheet! Answer aloud
+                    using at least <b>one target structure</b> (<i>"I wish I had..."</i>, <i>"If I had..., I would
+                        have..."</i>, or <i>"If only..."</i>).</p>
+
+                <div class="wheel-container">
+                    <div class="prompt-box" id="promptDisplay">Click the button below to spin for your discussion topic!
+                    </div>
+                    <center><button class="primary-btn" onclick="getPrompt()">Spin the Question Wheel 🎲</button>
+                    </center>
+                </div>
+            </div>
+
+            <!-- PRODUCTION ACTIVITY 2: TIME MACHINE REWIND LAB -->
+            <div class="activity-container">
+                <div class="activity-title">🕹️ Activity 2: The Secret "Time Machine Rewind" Fixer</div>
+                <p>Imagine you have a real Time Machine! Choose one funny past mistake below. Write your sentence using
+                    the <b>3rd Conditional</b> to rewrite history!</p>
+
+                <div class="rewind-card">
+                    <b>Scenario:</b> You ate two spicy peppers at dinner because of a dare, and your tongue was on fire
+                    all night!<br>
+                    <i>Example: "If I hadn't eaten the spicy peppers, my mouth wouldn't have burned so much!"[cite:
+                        4]</i>
+                    <textarea id="studentRewind"
+                        placeholder="Type your 3rd conditional sentence here: If I had / hadn't..., I would / wouldn't have..."></textarea>
+                    <button class="primary-btn" style="margin-top:10px; padding:8px 18px; font-size:0.9rem;"
+                        onclick="checkRewind()">Submit to Time Machine 🚀</button>
+                    <div id="rewind-fb" style="margin-top:8px; font-weight:bold;"></div>
+                </div>
+            </div>
+
+            <div class="page-controls">
+                <button class="nav-nav-btn" onclick="switchStage(3)">⬅ Back to Practice</button>
+                <span></span>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Page / Stage Navigation
+        function switchStage(stageNum) {
+            document.querySelectorAll('.stage-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(`stage-${stageNum}`).classList.add('active');
+            document.querySelectorAll('.tab-btn')[stageNum - 1].classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Web Speech API for Audio Click Listening
+        function speakPhrase(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Speech synthesis is not supported on this browser.");
+            }
+        }
+
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // Warm-up Stars
+        function rate(btn) {
+            const parent = btn.parentElement;
+            const stars = Array.from(parent.children);
+            const index = stars.indexOf(btn);
+            stars.forEach((s, i) => {
+                s.classList.toggle('active', i <= index);
+            });
+        }
+
+        // Dialogue Comprehension Checks
+        function checkComp(qNum, isCorrect) {
+            const fb = document.getElementById(`comp-fb${qNum}`);
+            if (isCorrect) {
+                fb.innerHTML = '✔ Exactly right! Great listening!';
+                fb.style.color = '#10ac84';
+            } else {
+                fb.innerHTML = '✖ Not quite! Check the dialogue text above again.';
+                fb.style.color = '#ee5253';
+            }
+        }
+
+        // True/False tracking
+        const tfAnswers = { 15: null, 16: null, 17: null, 18: null, 19: null, 20: null, 21: null };
+
+        function setTF(qNum, value, elem) {
+            tfAnswers[qNum] = value;
+            const parent = elem.parentElement;
+            Array.from(parent.children).forEach(b => b.classList.remove('selected'));
+            elem.classList.add('selected');
+        }
+
+        // Check 21 Exercises
+        function checkAllExercises() {
+            // 1. Fill-in-the-blank
+            const e1Keys = {
+                e1_1: 'would_bought',
+                e1_2: 'late',
+                e1_3: 'won',
+                e1_4: 'hungry',
+                e1_5: 'unfortunate',
+                e1_6: 'shouldnt_spent',
+                e1_7: 'clean'
+            };
+
+            Object.keys(e1Keys).forEach(id => {
+                const userVal = document.getElementById(id).value;
+                const fb = document.getElementById(`fb_${id}`);
+                if (userVal === e1Keys[id]) {
+                    fb.innerHTML = '✔ Correct!';
+                    fb.style.color = 'green';
+                } else {
+                    fb.innerHTML = '✖ Try again';
+                    fb.style.color = 'red';
+                }
+            });
+
+            // 2. Meaning Match
+            const e2Keys = {
+                e2_1: 'pass',
+                e2_2: 'tired',
+                e2_3: 'game',
+                e2_4: 'bark',
+                e2_5: 'hurt',
+                e2_6: 'space',
+                e2_7: 'help'
+            };
+
+            Object.keys(e2Keys).forEach(id => {
+                const userVal = document.getElementById(id).value;
+                const fb = document.getElementById(`fb_${id}`);
+                if (userVal === e2Keys[id]) {
+                    fb.innerHTML = '✔ Correct!';
+                    fb.style.color = 'green';
+                } else {
+                    fb.innerHTML = '✖ Try again';
+                    fb.style.color = 'red';
+                }
+            });
+
+            // 3. True / False
+            const tfCorrect = {
+                15: 'F',
+                16: 'T',
+                17: 'F',
+                18: 'T',
+                19: 'F',
+                20: 'T',
+                21: 'T'
+            };
+
+            for (let i = 15; i <= 21; i++) {
+                const fb = document.getElementById(`fb_e3_${i - 14}`);
+                if (tfAnswers[i] === tfCorrect[i]) {
+                    fb.innerHTML = '✔ Correct!';
+                    fb.style.color = 'green';
+                } else {
+                    fb.innerHTML = '✖ Try again';
+                    fb.style.color = 'red';
+                }
+            }
+        }
+
+        // 8 Discussion prompts adapted from the PDF worksheet
+        const prompts = [
+            "What bad habit do you wish you could stop right now?",
+            "What is a silly regret you have from your last school year?",
+            "Who do you wish you could hang out with this upcoming weekend?",
+            "What birthday or holiday present do you wish you had received?",
+            "What cool game or pet would you have in your room if only you had more space?",
+            "Is it better to have tried and failed, or never tried at all? Why?",
+            "What goal or hobby do you wish you had started practicing earlier?",
+            "What would you have done if your best friend hadn't been there to help you on a tough day?"
+        ];
+
+        function getPrompt() {
+            const randomIdx = Math.floor(Math.random() * prompts.length);
+            document.getElementById('promptDisplay').innerText = prompts[randomIdx];
+        }
+
+        // Time Machine sentence checker
+        function checkRewind() {
+            const text = document.getElementById('studentRewind').value.toLowerCase();
+            const fb = document.getElementById('rewind-fb');
+            if (text.includes('if') && (text.includes('had') || text.includes("hadn't")) && (text.includes('would') || text.includes("wouldn't"))) {
+                fb.innerHTML = '🎉 Awesome Time Machine sentence! History rewritten successfully!';
+                fb.style.color = '#10ac84';
+            } else {
+                fb.innerHTML = '⚠️ Make sure to include both: "If I had / hadn\'t..." AND "...would have / wouldn\'t have..."';
+                fb.style.color = '#ee5253';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
